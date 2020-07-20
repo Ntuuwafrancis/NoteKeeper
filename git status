@@ -1,0 +1,30 @@
+[33mcommit 04aad63a8381e7220d5b50628ad20590a961e7a1[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Ntuuwafrancis <51553342+Ntuuwafrancis@users.noreply.github.com>
+Date:   Sun Jul 19 19:09:51 2020 +0300
+
+    NoteKeeper git commit 08(Shared Preferences)
+
+[1mdiff --git a/AndroidStudio ScreenShots/device-2020-07-19-185337.png b/AndroidStudio ScreenShots/device-2020-07-19-185337.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..cd6c67d[m
+Binary files /dev/null and b/AndroidStudio ScreenShots/device-2020-07-19-185337.png differ
+[1mdiff --git a/AndroidStudio ScreenShots/device-2020-07-19-185508.png b/AndroidStudio ScreenShots/device-2020-07-19-185508.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..6fcd9b1[m
+Binary files /dev/null and b/AndroidStudio ScreenShots/device-2020-07-19-185508.png differ
+[1mdiff --git a/AndroidStudio ScreenShots/device-2020-07-19-185546.png b/AndroidStudio ScreenShots/device-2020-07-19-185546.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..91fca4b[m
+Binary files /dev/null and b/AndroidStudio ScreenShots/device-2020-07-19-185546.png differ
+[1mdiff --git a/AndroidStudio ScreenShots/device-2020-07-19-185645.png b/AndroidStudio ScreenShots/device-2020-07-19-185645.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..267bd57[m
+Binary files /dev/null and b/AndroidStudio ScreenShots/device-2020-07-19-185645.png differ
+[1mdiff --git a/AndroidStudio ScreenShots/device-2020-07-19-185722.png b/AndroidStudio ScreenShots/device-2020-07-19-185722.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..36e27a2[m
+Binary files /dev/null and b/AndroidStudio ScreenShots/device-2020-07-19-185722.png differ
+[1mdiff --git a/AndroidStudio ScreenShots/device-2020-07-19-185749.png b/AndroidStudio ScreenShots/device-2020-07-19-185749.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5d58e02[m
+Binary files /dev/null and b/AndroidStudio ScreenShots/device-2020-07-19-185749.png differ
