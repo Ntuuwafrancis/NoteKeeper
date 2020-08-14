@@ -1,6 +1,8 @@
 package com.frank.notekeeper;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.app.LoaderManager;
@@ -27,6 +29,8 @@ import android.widget.Spinner;
 
 import com.frank.notekeeper.NoteKeeperDatabaseContract.CourseInfoEntry;
 import com.frank.notekeeper.NoteKeeperDatabaseContract.NoteInfoEntry;
+import com.frank.notekeeper.NoteKeeperProviderContract.Courses;
+import com.frank.notekeeper.NoteKeeperProviderContract.Notes;
 
 
 public class NoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -56,6 +60,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     private SimpleCursorAdapter mAdapterCourses;
     private boolean mCoursesQueryFinished;
     private boolean mNotesQueryFinished;
+    private Uri mNoteUri;
 
 
     @Override
@@ -159,6 +164,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
 
             } else {
                 storePreviousNoteValues();
+
             }
         } else {
             saveNote();
@@ -168,15 +174,13 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void deleteNoteFromDatabase() {
-       final String selection = NoteInfoEntry._ID + " = ?";
-       final String[] selectionArgs = {Integer.toString(mNoteId)};
 
         @SuppressLint("StaticFieldLeak")
         AsyncTask task = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
-                SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-                db.delete(NoteInfoEntry.TABLE_NAME, selection, selectionArgs);
+
+                getContentResolver().delete(mNoteUri, null, null);
                 return null;
             }
         };
@@ -218,24 +222,12 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void saveNoteToDatabase (String courseId, String noteTitle, String noteText) {
-        final String selection = NoteInfoEntry._ID + " = ?";
-        final String[] selectionArgs = {Integer.toString(mNoteId)};
-
         final ContentValues values = new ContentValues();
         values.put(NoteInfoEntry.COLUMN_COURSE_ID, courseId);
         values.put(NoteInfoEntry.COLUMN_NOTE_TITLE, noteTitle);
         values.put(NoteInfoEntry.COLUMN_NOTE_TEXT, noteText);
 
-        @SuppressLint("StaticFieldLeak")
-        AsyncTask task = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-                db.update(NoteInfoEntry.TABLE_NAME, values, selection, selectionArgs);
-                return null;
-            }
-        };
-        task.execute();
+        getContentResolver().update(mNoteUri, values, null, null);
 
     }
 
@@ -285,21 +277,12 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void createNewNote() {
         final ContentValues values = new ContentValues();
-        values.put(NoteInfoEntry.COLUMN_COURSE_ID, "");
-        values.put(NoteInfoEntry.COLUMN_NOTE_TITLE, "");
-        values.put(NoteInfoEntry.COLUMN_NOTE_TEXT, "");
+        values.put(Notes.COLUMN_COURSE_ID, "");
+        values.put(Notes.COLUMN_NOTE_TITLE, "");
+        values.put(Notes.COLUMN_NOTE_TEXT, "");
 
-        @SuppressLint("StaticFieldLeak")
-        AsyncTask task = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
-                mNoteId = (int) db.insert(NoteInfoEntry.TABLE_NAME, null, values);
+        mNoteUri = getContentResolver().insert(Notes.CONTENT_URI, values);
 
-                return null;
-            }
-        };
-        task.execute();
            }
 
     @Override
@@ -377,37 +360,27 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     @SuppressLint("StaticFieldLeak")
     private CursorLoader createLoaderCourses() {
         mCoursesQueryFinished = false;
-        Uri uri = Uri.parse("content://com.frank.notekeeper.provider");
+        Uri uri = Courses.CONTENT_URI;
         String[] courseColumns = {
-                CourseInfoEntry.COLUMN_COURSE_TITLE,
-                CourseInfoEntry.COLUMN_COURSE_ID,
-                CourseInfoEntry._ID
+                Courses.COLUMN_COURSE_TITLE,
+                Courses.COLUMN_COURSE_ID,
+                Courses._ID
         };
-        return new CursorLoader(this, uri, courseColumns, null, null, CourseInfoEntry.COLUMN_COURSE_TITLE);
+        return new CursorLoader(this, uri, courseColumns, null, null, Courses.COLUMN_COURSE_TITLE);
 
     }
 
     @SuppressLint("StaticFieldLeak")
     private CursorLoader createLoaderNotes() {
         mNotesQueryFinished = false;
-        return new CursorLoader(this) {
-            @Override
-            public Cursor loadInBackground() {
-                SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
-
-                String selection = NoteInfoEntry._ID + " = ?";
-                String[] selectionArgs = {Integer.toString(mNoteId)};
 
                 String [] noteColumns = {
-                        NoteInfoEntry.COLUMN_COURSE_ID,
-                        NoteInfoEntry.COLUMN_NOTE_TITLE,
-                        NoteInfoEntry.COLUMN_NOTE_TEXT
+                        Notes.COLUMN_COURSE_ID,
+                        Notes.COLUMN_NOTE_TITLE,
+                        Notes.COLUMN_NOTE_TEXT
                 };
-
-                return db.query(NoteInfoEntry.TABLE_NAME, noteColumns, selection, selectionArgs,
-                        null, null, null);
-            }
-        };
+        mNoteUri = ContentUris.withAppendedId(Notes.CONTENT_URI, mNoteId);
+        return new CursorLoader(this, mNoteUri, noteColumns, null, null, null);
     }
 
 
