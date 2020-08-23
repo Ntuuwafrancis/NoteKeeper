@@ -215,11 +215,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings){
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             return true;
+        } else if (id == R.id.action_backup_notes){
+            backUpNotes();
+
         }
+
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void backUpNotes() {
+
+        Intent intent = new Intent(this, NoteBackupService.class);
+        intent.putExtra(NoteBackupService.EXTRA_COURSE_ID, NoteBackup.ALL_COURSES);
+        startService(intent);
+    }
 
     @Override
     public void onBackPressed() {
