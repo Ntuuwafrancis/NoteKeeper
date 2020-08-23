@@ -23,7 +23,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
@@ -31,6 +33,7 @@ import com.frank.notekeeper.NoteKeeperDatabaseContract.CourseInfoEntry;
 import com.frank.notekeeper.NoteKeeperDatabaseContract.NoteInfoEntry;
 import com.frank.notekeeper.NoteKeeperProviderContract.Courses;
 import com.frank.notekeeper.NoteKeeperProviderContract.Notes;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class NoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -71,6 +74,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "************** onCreate **************");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -102,7 +106,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
         if(!mIsNewNote)
           getLoaderManager().initLoader(LOADER_NOTES, null, this);
 
-        Log.d(TAG, "onCreate");
+
     }
 
     private void loadCourseData() {
@@ -170,7 +174,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
             saveNote();
 
         }
-        Log.d(TAG, "onPause");
+        Log.d(TAG, "************** onPause **************");
     }
 
     private void deleteNoteFromDatabase() {
@@ -276,14 +280,69 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void createNewNote() {
+
+        @SuppressLint("StaticFieldLeak") AsyncTask<ContentValues, Integer, Uri> task = new AsyncTask<ContentValues, Integer, Uri>() {
+            private ProgressBar mProgressBar;
+
+            @Override
+            protected void onPreExecute() {
+                mProgressBar = findViewById(R.id.progress_bar);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setProgress(1);
+            }
+
+            @Override
+            protected Uri doInBackground(ContentValues... contentValues) {
+
+                Log.d(TAG, "doInBackground - thread: "+  Thread.currentThread().getId());
+                ContentValues insertValues = contentValues[0];
+                Uri rowUri = getContentResolver().insert(Notes.CONTENT_URI, insertValues);
+               simulateLongRunningWork(); // simulate slow database work
+                publishProgress(2);
+
+
+                simulateLongRunningWork(); // simulate slow work with data
+                publishProgress(3);
+
+                return rowUri;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                int progressValues = values[0];
+                mProgressBar.setProgress(progressValues);
+            }
+
+            @Override
+            protected void onPostExecute(Uri uri) {
+
+                Log.d(TAG, "onPostExecute - thread: "+  Thread.currentThread().getId());
+                mNoteUri = uri;
+                displaySnackBar(mNoteUri.toString());
+                mProgressBar.setVisibility(View.GONE);
+            }
+        };
+
         final ContentValues values = new ContentValues();
         values.put(Notes.COLUMN_COURSE_ID, "");
         values.put(Notes.COLUMN_NOTE_TITLE, "");
         values.put(Notes.COLUMN_NOTE_TEXT, "");
 
-        mNoteUri = getContentResolver().insert(Notes.CONTENT_URI, values);
+        Log.d(TAG, "Call to execute - thread: "+  Thread.currentThread().getId());
+        task.execute(values);
 
            }
+
+    private void simulateLongRunningWork() {
+        try {
+            Thread.sleep(2000);
+        } catch (Exception ex) {}
+    }
+
+    private void displaySnackBar(String message) {
+        View view = findViewById(R.id.spinner_courses);
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

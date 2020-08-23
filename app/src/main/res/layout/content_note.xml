@@ -8,6 +8,22 @@
     tools:context=".NoteActivity"
     tools:showIn="@layout/activity_note">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:max="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/text_note_text"
+        app:layout_constraintStart_toStartOf="@+id/text_note_text"
+        app:layout_constraintTop_toBottomOf="@+id/text_note_text"
+        tools:visibility="gone" />
+
     <Spinner
         android:id="@+id/spinner_courses"
         android:layout_width="0dp"
@@ -29,6 +45,7 @@
         android:gravity="start|top"
         android:hint="@string/note_title_hint"
         android:inputType="textMultiLine"
+        android:textColorHint="?android:attr/textColorHint"
         app:layout_constraintEnd_toEndOf="@+id/spinner_courses"
         app:layout_constraintStart_toStartOf="@+id/spinner_courses"
         app:layout_constraintTop_toBottomOf="@+id/spinner_courses" />
