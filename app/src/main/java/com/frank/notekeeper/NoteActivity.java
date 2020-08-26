@@ -1,25 +1,17 @@
 package com.frank.notekeeper;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
+import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Intent;
-import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-//import androidx.loader.app.LoaderManager;
-//import androidx.loader.content.CursorLoader;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +26,13 @@ import com.frank.notekeeper.NoteKeeperDatabaseContract.NoteInfoEntry;
 import com.frank.notekeeper.NoteKeeperProviderContract.Courses;
 import com.frank.notekeeper.NoteKeeperProviderContract.Notes;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+//import androidx.loader.app.LoaderManager;
+//import androidx.loader.content.CursorLoader;
 
 
 public class NoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -246,6 +245,8 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
         mSpinnerCourses.setSelection(courseIndex);
         mTextNoteTitle.setText(noteTitle);
         mTextNoteText.setText(noteText);
+
+        CourseEventBroadcastHelper.sendEventBroadcast(this, courseId, "Editing Note");
     }
 
     private int getIndexOfCourseId(String courseId) {
