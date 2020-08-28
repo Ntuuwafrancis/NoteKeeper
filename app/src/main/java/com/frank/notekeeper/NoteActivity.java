@@ -42,6 +42,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int LOADER_NOTES = 0;
     public static final int LOADER_COURSES = 1;
     private final String TAG = getClass().getSimpleName();
+    public static final String NOTE_URI = "com.frank.notekeeper.NOTE_URI";
     public static final String NOTE_ID = "com.frank.notekeeper.NOTE_ID";
     public static final String ORIGINAL_NOTE_COURSE_ID = "com.frank.notekeeper.ORIGINAL_NOTE_COURSE_ID";
     public static final String ORIGINAL_NOTE_TITLE = "com.frank.notekeeper.ORIGINAL_NOTE_TITLE";
@@ -100,6 +101,8 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
             saveOriginalNoteValues();
         } else {
             restoreOriginalNoteValues(savedInstanceState);
+            String stringNoteUri = savedInstanceState.getString(NOTE_URI);
+            mNoteUri = Uri.parse(stringNoteUri);
         }
 
         mTextNoteTitle = findViewById(R.id.text_note_title);
@@ -207,6 +210,8 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
         outState.putString(ORIGINAL_NOTE_COURSE_ID, mOriginalNoteCourseId);
         outState.putString(ORIGINAL_NOTE_TITLE, mOriginalNoteTitle);
         outState.putString(ORIGINAL_NOTE_TEXT, mOriginalNoteText);
+
+        outState.putString(NOTE_URI, mNoteUri.toString());
     }
 
 
@@ -488,7 +493,9 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
         mCourseIdPos = mNoteCursor.getColumnIndex(NoteInfoEntry.COLUMN_COURSE_ID);
         mNoteTitlePos = mNoteCursor.getColumnIndex(NoteInfoEntry.COLUMN_NOTE_TITLE);
         mNoteTextPos = mNoteCursor.getColumnIndex(NoteInfoEntry.COLUMN_NOTE_TEXT);
-        mNoteCursor.moveToNext();
+
+        mNoteCursor.moveToFirst();
+
         mNotesQueryFinished = true;
         displayNoteWhenQueriesFinished();
 

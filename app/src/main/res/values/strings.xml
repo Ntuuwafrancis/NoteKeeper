@@ -10,7 +10,6 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_note_list">NoteListActivity</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -49,4 +48,6 @@
     <string name="pref_default_display_name">your name</string>
     <string name="pref_default_email_address">yourname@yourhost.com</string>
     <string name="pref_default_favorite_social">http://plus.google.com</string>
+    <string name="title_activity_note">Edit Note</string>
+    <string name="title_activity_main">NoteKeeper</string>
 </resources>

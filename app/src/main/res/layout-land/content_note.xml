@@ -8,33 +8,6 @@
     tools:context=".NoteActivity"
     tools:showIn="@layout/activity_note">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:max="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/text_note_text"
-        app:layout_constraintStart_toStartOf="@+id/text_note_text"
-        app:layout_constraintTop_toBottomOf="@+id/text_note_text"
-        tools:visibility="gone" />
-
-    <Spinner
-        android:id="@+id/spinner_courses"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/text_note_title"
         android:layout_width="0dp"
@@ -55,14 +28,46 @@
         android:id="@+id/text_note_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/note_text_hint"
         android:inputType="textMultiLine"
         android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintEnd_toEndOf="@+id/text_note_title"
-        app:layout_constraintStart_toStartOf="@+id/text_note_title"
-        app:layout_constraintTop_toBottomOf="@+id/text_note_title" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:max="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/text_note_text"
+        app:layout_constraintStart_toStartOf="@+id/text_note_text"
+        app:layout_constraintTop_toBottomOf="@+id/text_note_text"
+        tools:visibility="gone" />
+
+    <Spinner
+        android:id="@+id/spinner_courses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50073206" />
 </androidx.constraintlayout.widget.ConstraintLayout>
