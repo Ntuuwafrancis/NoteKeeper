@@ -70,4 +70,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.50073206" />
+
+    <view
+        android:id="@+id/module_status"
+        class="com.frank.notekeeper.ModuleStatusView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/text_note_title"
+        app:layout_constraintStart_toStartOf="@+id/text_note_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_note_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
