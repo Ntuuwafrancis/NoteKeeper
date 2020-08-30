@@ -67,6 +67,7 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     private boolean mCoursesQueryFinished;
     private boolean mNotesQueryFinished;
     private Uri mNoteUri;
+    private ModuleStatusView mViewModuleStatus;
 
 
     @Override
@@ -112,6 +113,21 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
           getLoaderManager().initLoader(LOADER_NOTES, null, this);
 
 
+        mViewModuleStatus = findViewById(R.id.module_status);
+        loadModuleStatusValues();
+
+    }
+
+    private void loadModuleStatusValues() {
+        // in real life we'd lookup course's module statuses from the content provider
+        int totalNumberOfValues = 11;
+        int completedNumberOfValues = 7;
+        boolean[] moduleStatus = new boolean[totalNumberOfValues];
+        for (int moduleIndex = 0; moduleIndex < completedNumberOfValues; moduleIndex++) {
+            moduleStatus[moduleIndex] = true;
+        }
+
+        mViewModuleStatus.setModuleStatus(moduleStatus);
     }
 
     private void loadCourseData() {
